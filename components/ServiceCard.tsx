@@ -1,15 +1,26 @@
 import Link from "next/link";
 import { Service, scoreToStarsPrecise, gradeColor } from "@/lib/kansei";
+import { Lang } from "@/lib/dict";
 import { StarRating } from "./StarRating";
 
-export function ServiceCard({ service, rank }: { service: Service; rank?: number }) {
+export function ServiceCard({
+  service,
+  rank,
+  lang,
+}: {
+  service: Service;
+  rank?: number;
+  lang: Lang;
+}) {
   const stars = scoreToStarsPrecise(service.axr_score);
   const successPct =
     service.success_rate != null ? Math.round(service.success_rate * 100) : null;
+  const prefix = lang === "en" ? "" : "/ja";
+  const href = `${prefix}/service/${service.id}`;
 
   return (
     <Link
-      href={`/service/${service.id}`}
+      href={href}
       className="group block rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm transition-all"
     >
       <div className="flex items-start justify-between gap-3">
@@ -45,7 +56,7 @@ export function ServiceCard({ service, rank }: { service: Service; rank?: number
           )}
           {service.mcp_status === "official" && (
             <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-              Official
+              {lang === "ja" ? "公式" : "Official"}
             </span>
           )}
         </div>
