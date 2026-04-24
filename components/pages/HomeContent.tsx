@@ -172,7 +172,10 @@ export async function HomeContent({ lang }: { lang: Lang }) {
                     </span>
                   </div>
                   {v.response_text && (
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-4">
+                    <p
+                      lang="en"
+                      className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-4"
+                    >
                       &ldquo;{v.response_text}&rdquo;
                     </p>
                   )}

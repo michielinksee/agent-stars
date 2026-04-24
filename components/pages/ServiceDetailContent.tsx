@@ -184,7 +184,10 @@ export async function ServiceDetailContent({
                       {tQuestion(lang, v.question_id)}
                     </p>
                     {v.response_text && (
-                      <p className="text-zinc-800 dark:text-zinc-200 leading-relaxed">
+                      <p
+                        lang="en"
+                        className="text-zinc-800 dark:text-zinc-200 leading-relaxed"
+                      >
                         &ldquo;{v.response_text}&rdquo;
                       </p>
                     )}
