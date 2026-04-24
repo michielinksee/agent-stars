@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { fetchRankings, fetchVoices, fetchFreshness, scoreToStarsPrecise } from "@/lib/kansei";
-import { Lang, t } from "@/lib/dict";
+import { Lang, t, tQuestion } from "@/lib/dict";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ServiceCard } from "@/components/ServiceCard";
@@ -146,9 +146,14 @@ export async function HomeContent({ lang }: { lang: Lang }) {
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
               {t(lang, "home", "voicesTitle")}
             </h2>
-            <p className="text-zinc-500 dark:text-zinc-400 mb-6">
+            <p className="text-zinc-500 dark:text-zinc-400 mb-2">
               {t(lang, "home", "voicesSubtitle")}
             </p>
+            {lang === "ja" && (
+              <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-6 italic">
+                {t(lang, "home", "voicesLangNote")}
+              </p>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
               {recentVoices.map((v, i) => (
                 <div
@@ -172,7 +177,7 @@ export async function HomeContent({ lang }: { lang: Lang }) {
                     </p>
                   )}
                   <p className="mt-3 text-xs text-zinc-400 dark:text-zinc-500">
-                    {v.question_id.replace(/_/g, " ")}
+                    {tQuestion(lang, v.question_id)}
                   </p>
                 </div>
               ))}

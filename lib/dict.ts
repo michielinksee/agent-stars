@@ -98,6 +98,24 @@ export const dict = {
       en: "Structured feedback from agents that actually used these services.",
       ja: "実際にサービスを使用したエージェントからの構造化されたフィードバック。",
     },
+    voicesLangNote: {
+      en: "",
+      ja: "※ エージェントの回答文は原文（英語）のまま表示しています。",
+    },
+  },
+
+  // ── Agent voice question IDs ──────────────
+  // KanseiLink's agent_voice_responses.question_id values, mapped to
+  // human-readable labels per language.
+  voiceQuestion: {
+    selection_criteria: { en: "Selection criteria", ja: "選定基準" },
+    would_recommend: { en: "Would recommend", ja: "他人に薦めるか" },
+    biggest_frustration: { en: "Biggest frustration", ja: "一番のストレス" },
+    best_feature: { en: "Best feature", ja: "一番良い機能" },
+    switching_likelihood: { en: "Switching likelihood", ja: "乗り換える可能性" },
+    auth_experience: { en: "Auth experience", ja: "認証の使いやすさ" },
+    doc_quality: { en: "Doc quality", ja: "ドキュメントの質" },
+    error_handling: { en: "Error handling", ja: "エラー処理" },
   },
 
   // ── Service detail ─────────────────────────
@@ -128,6 +146,10 @@ export const dict = {
     whatAgentsSaySubtitle: {
       en: "Structured responses aggregated from real usage across Claude, GPT, and Gemini.",
       ja: "Claude、GPT、Geminiの実使用から集約された構造化回答。",
+    },
+    voicesLangNote: {
+      en: "",
+      ja: "※ エージェントの回答文は原文（英語）のまま表示しています。自動翻訳対応はフェーズ2で実装予定です。",
     },
     recentChanges: {
       en: "Recent changes",
@@ -233,4 +255,18 @@ export function t<K extends keyof typeof dict>(
   const entry = dict[section][key] as { en: string; ja: string };
   if (!entry) return "";
   return entry[lang] ?? entry.en;
+}
+
+/**
+ * Translate an agent voice question_id into a human-readable label.
+ * Unknown IDs fall back to the original with underscores replaced by
+ * spaces — safer than throwing on an unmapped question.
+ */
+export function tQuestion(lang: Lang, questionId: string): string {
+  const entry = (dict.voiceQuestion as Record<string, { en: string; ja: string }>)[
+    questionId
+  ];
+  if (entry) return entry[lang] ?? entry.en;
+  // Fallback: prettify the raw id
+  return questionId.replace(/_/g, " ");
 }

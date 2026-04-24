@@ -7,7 +7,7 @@ import {
   scoreToStarsPrecise,
   gradeColor,
 } from "@/lib/kansei";
-import { Lang, t } from "@/lib/dict";
+import { Lang, t, tQuestion } from "@/lib/dict";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StarRating } from "@/components/StarRating";
@@ -166,9 +166,14 @@ export async function ServiceDetailContent({
               <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
                 {t(lang, "service", "whatAgentsSay")}
               </h2>
-              <p className="text-zinc-500 dark:text-zinc-400 mb-6 text-sm">
+              <p className="text-zinc-500 dark:text-zinc-400 mb-2 text-sm">
                 {t(lang, "service", "whatAgentsSaySubtitle")}
               </p>
+              {lang === "ja" && (
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-6 italic">
+                  {t(lang, "service", "voicesLangNote")}
+                </p>
+              )}
               <div className="grid gap-3">
                 {voices.map((v, i) => (
                   <div
@@ -176,7 +181,7 @@ export async function ServiceDetailContent({
                     className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5"
                   >
                     <p className="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-2">
-                      {v.question_id.replace(/_/g, " ")}
+                      {tQuestion(lang, v.question_id)}
                     </p>
                     {v.response_text && (
                       <p className="text-zinc-800 dark:text-zinc-200 leading-relaxed">
