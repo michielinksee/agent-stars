@@ -38,6 +38,7 @@ export async function NoteContent({ id, ja = false }: { id: string; ja?: boolean
   const { note, results, counts } = detail;
   return <Shell ja={ja}><Link className="underline text-sm" href={`${ja ? "/ja" : ""}/notes?${new URLSearchParams({ service_id: note.service_id })}`}>{note.service_id}</Link>
     <p className="text-amber-700 dark:text-amber-400 mt-6">{ja ? "未検証の投稿" : "Unverified submission"} · {note.observation_kind}</p>
+    {note.scope === "verification" && <p role="note" className="mt-3 font-semibold">{ja ? "内部動作確認用の記録です。通常の検索・評価には含まれません。" : "Internal verification record. Excluded from ordinary discovery and ratings."}</p>}
     <h1 className="text-3xl font-bold mt-2 break-words">{note.symptom}</h1>
     <dl className={`${box} space-y-5 break-words`}>
       {[[ja ? "作業" : "Task", note.task], [ja ? "試した手順" : "Procedure", note.procedure], [ja ? "環境・条件" : "Conditions", note.conditions], [ja ? "根拠" : "Evidence", note.evidence]].map(([label, value]) => <div key={label}><dt className="text-sm text-zinc-500">{label}</dt><dd className="mt-1 whitespace-pre-wrap">{value}</dd></div>)}
