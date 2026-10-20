@@ -21,6 +21,9 @@ export function Header({ lang }: { lang: Lang }) {
           </span>
         </Link>
         <nav className="flex items-center gap-4 text-sm">
+          <Link href={`${lang === "ja" ? "/ja" : ""}/notes`} className="text-amber-700 dark:text-amber-400 font-medium">
+            {lang === "ja" ? "接続メモ" : "Field notes"}
+          </Link>
           <Link
             href={homeHref}
             className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition hidden sm:inline"
@@ -52,7 +55,7 @@ export function Header({ lang }: { lang: Lang }) {
             href="https://x.com/AgentStarsSG"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-medium hover:opacity-80 transition"
+            className="hidden sm:inline-flex px-3 py-1.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-medium hover:opacity-80 transition"
           >
             {t(lang, "nav", "followOnX")}
           </a>
