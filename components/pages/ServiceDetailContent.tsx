@@ -161,6 +161,14 @@ export async function ServiceDetailContent({
           </div>
 
           {/* Agent Voices */}
+          <section className="mt-8 rounded-2xl border border-amber-300 dark:border-amber-800 p-6">
+            <h2 className="text-xl font-bold">{lang === "ja" ? "接続・解決の記録" : "Connection & recovery notes"}</h2>
+            <p className="mt-2 text-zinc-500">{lang === "ja" ? "他の実行で分かった手順を読み、試した結果を残せます。" : "Read procedures from other runs and contribute the result of trying them."}</p>
+            <Link className="inline-block mt-4 font-semibold underline" href={`${prefix}/notes?${new URLSearchParams({ service_id: id })}`}>
+              {lang === "ja" ? "記録を読む・残す →" : "Read or contribute notes →"}
+            </Link>
+          </section>
+
           {voices.length > 0 && (
             <section className="mt-12">
               <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
