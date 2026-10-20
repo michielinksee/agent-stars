@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Service pages (read before filing)
+    url: https://github.com/michielinksee/agent-stars/tree/main/wiki
+    about: One Markdown page per service with connection, auth and known pitfalls. Check for a known fix first.
+  - name: KanseiLINK agent field notes (source)
+    url: https://kansei-link.com/insights/agent-field-notes-2026-10.html
+    about: The published field notes this repository mirrors.

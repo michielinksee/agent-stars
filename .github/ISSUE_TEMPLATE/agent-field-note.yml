@@ -1,0 +1,157 @@
+name: Agent field note
+description: "Report where an AI agent got stuck (or succeeded) connecting to a SaaS. Closed vocabularies; no keys, IDs or tenant URLs. / エージェントが SaaS 接続で詰まった所の報告（FORM-v0 の欄）"
+title: "[field-note] <service_id>: <error string or symptom>"
+labels: ["agent-field-note", "status:unverified"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One Issue = one symptom. Before filing, check `wiki/<service_id>.md` for a known fix.
+        Fill only the fields below. There is no field for secrets, so do not put tenant IDs, tokens, amounts, tenant URLs, email addresses or personal names anywhere.
+        一枚＝一つの詰まり。先に `wiki/<service_id>.md` を読み、既知なら Issue は不要です。鍵・ID・金額・テナント URL・メール・個人名は欄が無いので書かないでください。
+  - type: dropdown
+    id: kind
+    attributes:
+      label: kind
+      description: lived = from real work; synthetic = from a sealed probe question. Do not mix.
+      options:
+        - lived
+        - synthetic
+    validations:
+      required: true
+  - type: input
+    id: observer
+    attributes:
+      label: observer
+      description: "`agent:<runtime>` or `human:<org>`. No personal names."
+      placeholder: "agent:Claude Code"
+    validations:
+      required: true
+  - type: input
+    id: observed_on
+    attributes:
+      label: observed_on
+      description: "YYYY-MM-DD (or YYYY-MM-DD〜YYYY-MM-DD)"
+      placeholder: "2026-10-20"
+    validations:
+      required: true
+  - type: input
+    id: service
+    attributes:
+      label: service
+      description: KanseiLINK catalog service_id (e.g. freee, square, moneyforward)
+      placeholder: freee
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: component
+      description: Tool name and version. Versions are fine; keys, IDs and tenant URLs are not.
+      placeholder: "freee-mcp 0.26.5"
+    validations:
+      required: true
+  - type: dropdown
+    id: agent_runtime
+    attributes:
+      label: agent_runtime
+      options:
+        - Claude Code
+        - Codex
+        - public LLM API
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: task
+      description: What the agent was trying to do (max 120 chars). No identifiers.
+    validations:
+      required: true
+  - type: dropdown
+    id: organ_stopped
+    attributes:
+      label: organ_stopped
+      description: Which of the four reading organs stopped.
+      options:
+        - 発見 (discover)
+        - 理解 (understand)
+        - 接続 (connect)
+        - 完遂 (complete)
+        - なし (none)
+    validations:
+      required: true
+  - type: dropdown
+    id: symptom_class
+    attributes:
+      label: symptom_class
+      options:
+        - permission_missing
+        - wrong_target
+        - wrong_method
+        - not_found
+        - format
+        - token_expired
+        - rate_limit
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: error_key
+    attributes:
+      label: error_key
+      description: "The key that ties this note to the error an agent reads. layer (rest|mcp), http_status, provider_code, type_uri (RFC 9457, if any), message_pattern, wrapper_message_pattern. Error text only; no values (IDs, amounts, URLs). Leave empty for synthetic notes that stopped at discover/understand."
+      placeholder: |
+        layer: rest
+        http_status: 403
+        provider_code: forbiddenError
+        type_uri:
+        message_pattern: このアプリケーションにはアクセス権限がないエンドポイントです
+        wrapper_message_pattern:
+  - type: textarea
+    id: what_the_agent_saw
+    attributes:
+      label: what_the_agent_saw
+      description: The kind of error or answer that came back (max 200 chars). No values.
+    validations:
+      required: true
+  - type: textarea
+    id: what_was_true
+    attributes:
+      label: what_was_true
+      description: What turned out to be the case (max 200 chars). Leave empty if unknown.
+  - type: textarea
+    id: how_resolved
+    attributes:
+      label: how_resolved
+      description: "How it was solved (max 200 chars), or `unresolved`."
+    validations:
+      required: true
+  - type: input
+    id: human_step_required
+    attributes:
+      label: human_step_required
+      description: "`no`, or `yes: <what the human had to do, max 80 chars>`"
+      placeholder: "yes: grant the permission on the app and re-consent"
+    validations:
+      required: true
+  - type: input
+    id: reproducible_times_seen
+    attributes:
+      label: reproducible / times_seen
+      description: "yes|no|unknown, and an integer count with its denominator (e.g. `yes, 5/5`). Counts, not rates."
+      placeholder: "yes, 5/5"
+  - type: input
+    id: truth_anchor
+    attributes:
+      label: truth_anchor
+      description: "lived: 'self-reported, one observation' plus the name (not the path) of the private record. synthetic: the sealed-question fingerprint and the pre-registration fingerprint."
+      placeholder: "self-reported, one observation"
+  - type: checkboxes
+    id: no_secrets
+    attributes:
+      label: No secrets
+      options:
+        - label: "This note contains no keys, tokens, tenant/company IDs, tenant URLs, amounts, email addresses or personal names. / 鍵・トークン・事業所 ID・テナント URL・金額・メール・個人名を含んでいません"
+          required: true
