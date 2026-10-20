@@ -7,6 +7,9 @@ last_verified: 2026-10-07
 cards:
   - AWT-001
   - AWT-002
+error_cards:
+  - rest-403-forbiddenError-freee-invoices
+  - mcp-na-na-freee-current-company-mismatch
 sources:
   - https://kansei-link.com/insights/agent-field-notes.json
   - https://kansei-link.com/insights/agent-field-notes-2026-10.html#AWT-001
@@ -14,37 +17,27 @@ sources:
   - https://kansei-link.com/en/insights/agent-field-notes-2026-10.html
 ---
 
-# freee — agent field notes (lived, one observer, no blame)
+# freee — error card index (lived, one observer, no blame)
 
-**What this is**: two lived observations from using freee's official MCP server (`freee-mcp`). Each card is one observer's record; there are no rates, rankings or comparisons. Status `lived` means it happened in real work, not in a sealed probe.
+**What this is**: an index of the error cards for freee's official MCP server (`freee-mcp`). Each card is one observer's record; there are no rates, rankings or comparisons. Status `lived` means it happened in real work, not in a sealed probe.
 
 **Connection**: freee-mcp (official) talks to the freee REST API (`/api/1/...`) under an OAuth app registered by the user. The MCP keeps a persisted "current company" (事業所) in its config file.
 
-## Known pitfalls
+## Error cards
 
-## エラー contains freee_set_current_company — freee_api_get rejects a company_id that differs from the current company (AWT-001)
+| error_key | error_text | environment | status | card |
+|---|---|---|---|---|
+| [rest-403-forbiddenError-freee-invoices](errors/rest-403-forbiddenError-freee-invoices.md) | 403 forbiddenError このアプリケーションにはアクセス権限がないエンドポイントです | Claude Code / rest | lived | AWT-002 |
+| [mcp-na-na-freee-current-company-mismatch](errors/mcp-na-na-freee-current-company-mismatch.md) | freee_api_get error: company_id differs from the current company — use freee_set_current_company | Claude Code / stdio | lived | AWT-001 |
 
-- card_id: AWT-001 / kind: lived / observer: human:synapse-arrows / observed_on: 2026-09-24 (through 2026-10-01, reproduced in daily observation)
-- component: freee-mcp (official) tool `freee_api_get`
-- error_key: `{layer: mcp, message_pattern: "contains freee_set_current_company"}`
-- what_the_agent_saw: passing a `company_id` that differs from the current company to `freee_api_get` is rejected with an error telling you to switch with `freee_set_current_company`.
-- what_was_true: freee-mcp persists the "current company" in its config file and refuses calls to any other company. There are two company identifiers (the API `id` is 8 digits; the 事業所番号 is 10 digits). `freee_list_companies` returns formatted text, not JSON.
-  日本語: 事業所の識別子は二つある（API の id は 8桁・事業所番号は 10桁）。`freee_list_companies` の出力は整形テキストで JSON ではない。
-- how_resolved: call `freee_set_current_company` first (using the API `id`), do the work, then switch back.
-  日本語: 先に `freee_set_current_company` で切り替え（API の id を使う）、終わったら元の事業所に戻す。
-- human_step_required: no
+Search the error text you saw; each card's H1 is the error text verbatim.
 
-## 403 forbiddenError このアプリケーションにはアクセス権限がないエンドポイントです (AWT-002)
+### Quick pointers (the detail is in the cards)
 
-- card_id: AWT-002 / kind: lived / observer: human:synapse-arrows / observed_on: 2026-09-20
-- component: freee-mcp (0.26 series) + the observer's own freee app (OAuth registration)
-- operation: `GET /api/1/invoices`
-- error_key: `{layer: rest, http_status: 403, provider_code: forbiddenError, message_pattern: "このアプリケーションにはアクセス権限がないエンドポイントです", wrapper_message_pattern: "freee-mcp adds a hint about possible rate limiting / re-authentication"}`
-- what_the_agent_saw: auth succeeds and companies are visible, but only the invoices API is rejected with a permission error. 5 attempts, 5 failures.
-- what_was_true: the connected freee app (OAuth registration) did not have the invoice permission. Not a token-expiry or wrong-endpoint problem. Diagnosable from the error text alone. Not a freee-side problem; a mis-configuration on the observer's side.
-- how_resolved: unresolved at the time. A human must add the invoice permission to the app and re-consent. An agent cannot fix this.
-- human_step_required: yes: grant the permission on the app and re-consent
+- 403 forbiddenError on `GET /api/1/invoices` with auth working: the connected freee app lacks the invoice permission. Not a token problem; the wrapper's rate limiting hint is a red herring; 5 attempts, 5 failures; a human must grant the permission and re-consent (`human_step_required: yes`). An agent cannot fix this.
+- `freee_api_get` rejecting a different `company_id`: switch with `freee_set_current_company` using the API `id` (8 digits, not the 10 digits 事業所番号), do the work, then switch back (`human_step_required: no`). `freee_list_companies` returns formatted text, not JSON.
+  日本語: 事業所の識別子は二つある（API の id は 8桁・事業所番号は 10桁）。`freee_list_companies` の出力は整形テキストで JSON ではない。先に `freee_set_current_company` で切り替え（API の id を使う）、終わったら元の事業所に戻す。
 
 ## Last checked
 
-Published 2026-10-07 (KanseiLINK agent field notes, first issue). Source schema: `kansei-agent-field-notes/v1`.
+Published 2026-10-07 (KanseiLINK agent field notes, first issue). Source schema: `kansei-agent-field-notes/v1`. Cards split out into `wiki/errors/` on 2026-10-20.
