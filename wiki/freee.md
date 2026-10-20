@@ -29,7 +29,9 @@ sources:
 - error_key: `{layer: mcp, message_pattern: "contains freee_set_current_company"}`
 - what_the_agent_saw: passing a `company_id` that differs from the current company to `freee_api_get` is rejected with an error telling you to switch with `freee_set_current_company`.
 - what_was_true: freee-mcp persists the "current company" in its config file and refuses calls to any other company. There are two company identifiers (the API `id` is 8 digits; the 事業所番号 is 10 digits). `freee_list_companies` returns formatted text, not JSON.
+  日本語: 事業所の識別子は二つある（API の id は 8桁・事業所番号は 10桁）。`freee_list_companies` の出力は整形テキストで JSON ではない。
 - how_resolved: call `freee_set_current_company` first (using the API `id`), do the work, then switch back.
+  日本語: 先に `freee_set_current_company` で切り替え（API の id を使う）、終わったら元の事業所に戻す。
 - human_step_required: no
 
 ## 403 forbiddenError このアプリケーションにはアクセス権限がないエンドポイントです (AWT-002)
