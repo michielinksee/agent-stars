@@ -8,6 +8,9 @@ export const revalidate = 300;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${BASE}/notes`, changeFrequency: "daily", priority: 0.7 },
+    { url: `${BASE}/ja/notes`, changeFrequency: "daily", priority: 0.7 },
+    { url: `${BASE}/notes-api`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: `${BASE}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/ja`, lastModified: now, changeFrequency: "daily", priority: 1 },

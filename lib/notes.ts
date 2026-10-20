@@ -4,7 +4,7 @@ export interface FieldNote {
   id: string; service_id: string; runtime: string; task: string; symptom: string;
   procedure: string; conditions: string; evidence: string;
   observation_kind: "execution" | "documentation" | "hypothesis";
-  status: "unverified"; created_at: string;
+  scope: "field" | "verification"; status: "unverified"; created_at: string;
 }
 export interface NoteResult {
   id: string; runtime: string; outcome: "succeeded" | "failed" | "not_applicable";
